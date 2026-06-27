@@ -1,0 +1,233 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAX | Skate Shop</title>
+    <link rel="stylesheet" href="{% static 'css/vax-store.css' %}">
+</head>
+<body>
+
+<section id="intro" class="intro-screen">
+    <div class="intro-noise"></div>
+    <div class="intro-content">
+        <p class="tiny-tag">SKATE SHOP • NO RISK, NO REWARD.</p>
+        <h1>VAX</h1>
+        <p class="intro-copy">VAX-shop</p>
+        <button id="enterShopBtn" class="enter-btn">Enter shop</button>
+    </div>
+    <div class="intro-marquee">
+        <span>FREE STYLE • STREET DECKS • NEW BRANDS • VAX SHOP • COMPLETE SETUPS •</span>
+        <span>FREE STYLE • STREET DECKS • NEW BRANDS • VAX SHOP • COMPLETE SETUPS •</span>
+    </div>
+</section>
+
+<header id="shopHeader" class="shop-header hidden-header">
+    <div class="auth-left">
+        <button id="loginOpenBtn" class="link-btn">Login</button>
+        <span>/</span>
+        <button id="registerOpenBtn" class="link-btn">Register</button>
+        <button id="adminPanelBtn" class="pill-mini hidden">Admin</button>
+    </div>
+
+    <a href="#shop" id="logoHome" class="center-logo">VAX</a>
+
+    <nav class="nav-right" id="mainNav">
+        <button class="nav-trigger stable-menu-trigger" data-menu-target="skateMenu" type="button">Skate</button>
+        <button class="nav-trigger stable-menu-trigger" data-menu-target="brandsMenu" type="button">Brands</button>
+        <button class="nav-trigger stable-menu-trigger" data-menu-target="clothesMenu" type="button">Clothes</button>
+        <button id="cartOpenBtn" class="cart-top" type="button">Cart <span id="cartCount">0</span></button>
+    </nav>
+</header>
+
+<div id="navDropdownLayer" class="nav-dropdown-layer" aria-hidden="true">
+    <div id="skateMenu" class="stable-mega-panel" data-menu-panel>
+        <div class="panel-column">
+            <h4>Category</h4>
+            <button data-collection="skate" data-category-name="Decks">Decks</button>
+            <button data-collection="skate" data-category-name="Complete Skateboards">Complete skateboards</button>
+            <button data-collection="skate" data-category-name="Trucks">Trucks</button>
+            <button data-collection="skate" data-category-name="Wheels">Wheels</button>
+            <button data-collection="skate" data-category-name="Bearings">Bearings</button>
+            <button data-collection="skate" data-category-name="Parts">Parts</button>
+        </div>
+        <div class="panel-column">
+            <h4>All skate</h4>
+            <button data-collection="skate">Shop all skate</button>
+        </div>
+    </div>
+
+    <div id="brandsMenu" class="stable-mega-panel brand-panel" data-menu-panel>
+        <div class="panel-column full-column">
+            <h4>Brands</h4>
+            <div id="brandLinks" class="brand-links"></div>
+        </div>
+    </div>
+
+    <div id="clothesMenu" class="stable-mega-panel" data-menu-panel>
+        <div class="panel-column">
+            <h4>Category</h4>
+            <button data-collection="clothes" data-category-name="Shoes">Shoes</button>
+            <button data-collection="clothes" data-category-name="T-Shirts">T-shirts</button>
+            <button data-collection="clothes" data-category-name="Outerwear">Outerwear</button>
+            <button data-collection="clothes" data-category-name="Pants">Pants</button>
+            <button data-collection="clothes" data-category-name="Shorts">Shorts</button>
+            <button data-collection="clothes" data-category-name="Headwear">Headwear</button>
+        </div>
+    </div>
+</div>
+
+
+<main id="shop" class="shop-shell hidden-shop">
+    <section class="shop-hero">
+        <div>
+            <p class="tiny-tag">VAX-shop</p>
+            <h2>FIND YOUR STYLE!</h2>
+            <p>Pick the setup that feels like you.</p>
+        </div>
+        <button id="showAllBtn" class="outline-btn">View all products</button>
+    </section>
+
+    <section class="media-filter-row">
+        <section class="vax-video-section" aria-label="VAX skate video">
+            <div class="video-copy">
+                <h3>Ride first. Think later.</h3>
+            </div>
+            <div class="video-frame">
+                <video
+                    id="vaxLocalVideo"
+                    class="vax-local-video"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="auto"
+                    poster="{% static 'video/vax-poster.jpg' %}">
+                    <source src="{% static 'video/vax-skate-loop.mp4' %}" type="video/mp4">
+                </video>
+            </div>
+        </section>
+
+        <section class="filters-panel compact-filters">
+            <div class="collection-title">
+                <p class="tiny-tag">Shop faster</p>
+                <h3 id="collectionTitle">Filter</h3>
+            </div>
+            <div class="filters-grid">
+                <input id="searchInput" type="search" placeholder="Search product, brand, size...">
+                <select id="categorySelect"><option value="">All categories</option></select>
+                <select id="brandSelect"><option value="">All brands</option></select>
+                <input id="minPriceInput" type="number" step="0.01" placeholder="Min price">
+                <input id="maxPriceInput" type="number" step="0.01" placeholder="Max price">
+                <input id="sizeInput" type="text" placeholder="Size e.g. 8.25, M, 42">
+                <select id="sortSelect">
+                    <option value="-created_at">Newest</option>
+                    <option value="price">Price low to high</option>
+                    <option value="-price">Price high to low</option>
+                    <option value="title">A-Z</option>
+                </select>
+                <button id="resetFiltersBtn">Reset</button>
+            </div>
+        </section>
+    </section>
+
+    <div id="messageBox" class="message hidden"></div>
+    <section id="productsGrid" class="products-grid"></section>
+</main>
+
+<div id="authModal" class="modal hidden">
+    <div class="modal-card auth-card">
+        <button class="close-x" id="authCloseBtn">×</button>
+        <div class="auth-tabs">
+            <button id="loginTab" class="active">Login</button>
+            <button id="registerTab">Register</button>
+        </div>
+        <form id="loginForm" class="auth-form">
+            <h2>Login</h2>
+            <input id="loginUsername" type="text" placeholder="Username" required>
+            <input id="loginPassword" type="password" placeholder="Password" required>
+            <button type="submit" class="yellow-btn">Login</button>
+        </form>
+        <form id="registerForm" class="auth-form hidden">
+            <h2>Register</h2>
+            <input id="registerUsername" type="text" placeholder="Username" required>
+            <input id="registerEmail" type="email" placeholder="Email">
+            <input id="registerPassword" type="password" placeholder="Password min 8 characters" required>
+            <button type="submit" class="yellow-btn">Create account</button>
+        </form>
+    </div>
+</div>
+
+<div id="productModal" class="modal hidden">
+    <div class="modal-card product-modal-card">
+        <button class="close-x" id="productCloseBtn">×</button>
+        <div class="detail-layout">
+            <div class="detail-gallery">
+                <div class="detail-main"><img id="detailMainImage" src="" alt=""></div>
+                <div id="detailThumbs" class="detail-thumbs"></div>
+            </div>
+            <div class="detail-info">
+                <p id="detailBrand" class="tiny-tag"></p>
+                <h2 id="detailTitle"></h2>
+                <p id="detailPrice" class="detail-price"></p>
+                <p id="detailSize" class="detail-size"></p>
+                <p id="detailDescription" class="detail-description"></p>
+                <button id="detailAddCartBtn" class="yellow-btn">Add to cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="profileModal" class="modal hidden">
+    <div class="modal-card profile-card">
+        <button class="close-x" id="profileCloseBtn">×</button>
+
+        <div class="profile-head">
+            <p class="tiny-tag">Profile check</p>
+            <h2>My VAX account</h2>
+            <p>Rename your account and check your purchase history.</p>
+        </div>
+
+        <form id="profileForm" class="profile-form">
+            <div class="profile-grid profile-grid-simple">
+                <input id="profileUsername" type="text" placeholder="Username" required>
+                <input id="profileEmail" type="email" placeholder="Email">
+            </div>
+            <button type="submit" class="yellow-btn">Save profile</button>
+        </form>
+
+        <div class="purchase-history">
+            <div class="profile-section-title">
+                <h3>Purchase history</h3>
+                <button id="reloadOrdersBtn" type="button">Reload</button>
+            </div>
+            <div id="purchaseHistoryList" class="history-list">
+                <p class="muted-small">Login to see your orders.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<aside id="cartDrawer" class="cart-drawer">
+    <div class="cart-head">
+        <h2>Cart</h2>
+        <button id="cartCloseBtn">×</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-bottom">
+        <div class="cart-total">Total: <strong id="cartTotal">$0.00</strong></div>
+        <input id="shippingAddress" type="text" placeholder="Shipping address">
+        <button id="checkoutBtn" class="yellow-btn">Checkout</button>
+    </div>
+</aside>
+
+<div id="overlay" class="overlay hidden"></div>
+
+<footer class="footer">
+    <strong>VAX-shop</strong> — no risk, no reward.
+</footer>
+
+<script src="{% static 'js/vax-store.js' %}"></script>
+</body>
+</html>

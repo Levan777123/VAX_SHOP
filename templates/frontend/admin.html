@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAX Admin</title>
+    <link rel="stylesheet" href="{% static 'css/vax-admin.css' %}">
+</head>
+<body>
+<header class="admin-header">
+    <a href="/" class="admin-logo">VAX</a>
+    <nav>
+        <button data-tab="products" class="tab-btn active">Products</button>
+        <button data-tab="categories" class="tab-btn">Categories</button>
+        <button data-tab="brands" class="tab-btn">Brands</button>
+        <button data-tab="accounts" class="tab-btn">Accounts</button>
+        <a href="/">Shop</a>
+        <button id="logoutBtn">Logout</button>
+    </nav>
+</header>
+
+<main class="admin-shell">
+    <section id="loginPanel" class="login-box panel">
+        <p class="tiny-tag">Manager only</p>
+        <h1>VAX control room</h1>
+        <p class="muted">Login with manager account to add/edit/delete products, categories, brands and accounts.</p>
+        <form id="loginForm" class="grid-form">
+            <input id="loginUsername" type="text" placeholder="Username" required>
+            <input id="loginPassword" type="password" placeholder="Password" required>
+            <button type="submit" class="yellow-btn">Login</button>
+        </form>
+    </section>
+
+    <section id="dashboard" class="hidden">
+        <section class="admin-hero">
+            <div>
+                <p class="tiny-tag">Backend manager</p>
+                <h1>Shop management</h1>
+                <p class="muted">Build skate and clothes collections, upload hover/detail images, and control users.</p>
+            </div>
+            <div class="stats">
+                <div><strong id="totalProducts">0</strong><span>Products</span></div>
+                <div><strong id="publishedProducts">0</strong><span>Published</span></div>
+                <div><strong id="totalOrders">0</strong><span>Orders</span></div>
+            </div>
+        </section>
+
+        <div id="messageBox" class="message hidden"></div>
+
+        <section id="productsTab" class="tab-panel">
+            <div class="panel">
+                <div class="section-head">
+                    <h2 id="productFormTitle">Add product</h2>
+                    <button id="cancelEditBtn" class="ghost-btn hidden" type="button">Cancel edit</button>
+                </div>
+                <form id="productForm" class="product-form">
+                    <div class="two">
+                        <input id="productTitle" type="text" placeholder="Title" required>
+                        <input id="productSku" type="text" placeholder="SKU" required>
+                    </div>
+                    <textarea id="productDescription" placeholder="Description" required></textarea>
+                    <div class="four">
+                        <select id="productDepartment" required>
+                            <option value="skate">Skate</option>
+                            <option value="clothes">Clothes</option>
+                        </select>
+                        <select id="productCategory"><option value="">No category</option></select>
+                        <select id="productBrand"><option value="">No brand</option></select>
+                        <select id="productStatus">
+                            <option value="published">Published</option>
+                            <option value="draft">Draft</option>
+                            <option value="out_of_stock">Out of stock</option>
+                        </select>
+                    </div>
+                    <div class="three">
+                        <input id="productPrice" type="number" step="0.01" placeholder="Price" required>
+                        <input id="productStock" type="number" placeholder="Stock" required>
+                        <input id="productSize" type="text" placeholder="Size e.g. 8.25 / M / 42">
+                    </div>
+                    <div class="four upload-grid">
+                        <label>Main image<input id="productMainImage" type="file" accept="image/*"></label>
+                        <label>Hover image<input id="productHoverImage" type="file" accept="image/*"></label>
+                        <label>Detail image 1<input id="productDetailImage1" type="file" accept="image/*"></label>
+                        <label>Detail image 2<input id="productDetailImage2" type="file" accept="image/*"></label>
+                    </div>
+                    <button type="submit" class="yellow-btn">Save product</button>
+                </form>
+            </div>
+            <div class="panel">
+                <div class="section-head"><h2>Products</h2><button id="reloadProductsBtn" class="ghost-btn">Reload</button></div>
+                <div id="productsList" class="item-list"></div>
+            </div>
+        </section>
+
+        <section id="categoriesTab" class="tab-panel hidden">
+            <div class="panel">
+                <div class="section-head"><h2>Categories</h2><button id="seedCategoriesBtn" class="ghost-btn">Add default skate/clothes categories</button></div>
+                <form id="categoryForm" class="inline-form">
+                    <input id="categoryName" type="text" placeholder="Category name" required>
+                    <select id="categoryDepartment"><option value="skate">Skate</option><option value="clothes">Clothes</option></select>
+                    <button class="yellow-btn" type="submit">Add category</button>
+                </form>
+                <div id="categoriesList" class="item-list"></div>
+            </div>
+        </section>
+
+        <section id="brandsTab" class="tab-panel hidden">
+            <div class="panel">
+                <h2>Brands</h2>
+                <form id="brandForm" class="inline-form">
+                    <input id="brandName" type="text" placeholder="Brand name" required>
+                    <button class="yellow-btn" type="submit">Add brand</button>
+                </form>
+                <div id="brandsList" class="item-list"></div>
+            </div>
+        </section>
+
+        <section id="accountsTab" class="tab-panel hidden">
+            <div class="panel">
+                <h2>Create account</h2>
+                <form id="accountForm" class="product-form">
+                    <div class="three">
+                        <input id="accountUsername" type="text" placeholder="Username" required>
+                        <input id="accountEmail" type="email" placeholder="Email">
+                        <input id="accountPassword" type="password" placeholder="Password min 8">
+                    </div>
+                    <div class="three">
+                        <select id="accountRole"><option value="customer">Customer</option><option value="manager">Manager</option></select>
+                    </div>
+                    <button type="submit" class="yellow-btn">Create user</button>
+                </form>
+            </div>
+            <div class="panel">
+                <div class="section-head"><h2>Accounts</h2><button id="reloadAccountsBtn" class="ghost-btn">Reload</button></div>
+                <div id="accountsList" class="item-list"></div>
+            </div>
+        </section>
+    </section>
+</main>
+
+<script src="{% static 'js/vax-admin.js' %}"></script>
+</body>
+</html>

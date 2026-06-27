@@ -1,0 +1,14 @@
+django>=4.2,<5.0
+djangorestframework
+djangorestframework-simplejwt
+django-filter
+drf-nested-routers
+drf-spectacular
+celery
+redis
+django-redis
+Pillow
+psycopg2-binary
+pytest-django
+pytest
+factory-boy
